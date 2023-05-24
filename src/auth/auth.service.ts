@@ -11,7 +11,7 @@ export class AuthService {
         private jwtService: JwtService
     ) { }
 
-    async valideUser(username: string, password: string): Promise<any> {
+    async validateUser(username: string, password: string): Promise<any> {
         try {
             const user = this.client.send({ role: "user", cmd: "get" }, { username });
             console.log(user)
