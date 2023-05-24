@@ -5,6 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { jwtOptions } from './jwt.options';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 
@@ -21,12 +22,10 @@ import { LocalStrategy } from './local.strategy';
         }
       }
     ]),
-    JwtModule.registerAsync({ 
+    JwtModule.registerAsync({  
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get("JWT_ACCESS_SECRET"),
-        signOptions: { expiresIn: configService.get("JWT_ACCESS_TOKEN_EXPIRATION_TIME") }
-      })
+      inject: [ConfigService],
+      useFactory: jwtOptions
     }),
     PassportModule,
   ],
