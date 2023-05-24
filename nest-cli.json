@@ -1,24 +1,15 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/tenancia-auth/src",
+  "sourceRoot": "apps/auth/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/tenancia-auth/tsconfig.app.json"
+    "tsConfigPath": "apps/auth/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/tenancia-auth",
+  "root": "apps/auth",
   "projects": {
-    "tenancia-auth": {
-      "type": "application",
-      "root": "apps/tenancia-auth",
-      "entryFile": "main",
-      "sourceRoot": "apps/tenancia-auth/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/tenancia-auth/tsconfig.app.json"
-      }
-    },
     "user": {
       "type": "application",
       "root": "apps/user",
