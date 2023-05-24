@@ -14,6 +14,6 @@ async function bootstrap() {
   });
   await app.startAllMicroservices();
   await app.listen(3000);
-  Logger.log("Auth microservice started");
+  Logger.log("Auth microservice started on port 3000");
 }
 bootstrap();

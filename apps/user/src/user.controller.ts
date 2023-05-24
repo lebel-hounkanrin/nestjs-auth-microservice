@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UserService } from './user.service';
 
@@ -11,8 +12,9 @@ export class UserController {
     return this.userService.create(user)
   }
 
-  @Get()
-  greet(){
-    return "hello devs"
+  @MessagePattern({role: "user", cmd: "get"})
+  getUser(phoneNumber: string){
+    console.log("got user", phoneNumber)
+    return this.userService.getUserByPhoneNumber(phoneNumber);
   }
 }
