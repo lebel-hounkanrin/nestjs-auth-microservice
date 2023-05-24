@@ -21,16 +21,13 @@ import { LocalStrategy } from './local.strategy';
         }
       }
     ]),
-    JwtModule.registerAsync({ 
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get("JWT_ACCESS_SECRET"),
-        signOptions: { expiresIn: configService.get("JWT_ACCESS_TOKEN_EXPIRATION_TIME") }
-      })
+    JwtModule.register({  
+          secret:"",
+          signOptions: { expiresIn: ""}
     }),
     PassportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, ConfigService],
 })
 export class AuthModule {}
