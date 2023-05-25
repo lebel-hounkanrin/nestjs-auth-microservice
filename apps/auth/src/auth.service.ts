@@ -17,7 +17,7 @@ export class AuthService {
         this.client.send({ role: "user", cmd: "get" }, phoneNumber ).subscribe(user => {
           if(user && compareSync(password, user.password)){
             const {password, ...result} = user;
-            console.log(result)
+            console.log("AuthService validateUser", result)
             resolve(result);
           } else {resolve(null)}
         })
@@ -31,7 +31,7 @@ export class AuthService {
   
   async login(user: any) {
     const payload = { username: user.phoneNumber, sub: user.id };
-    console.log(payload)
+    console.log("AuthService login", payload)
     return {
       access_token: this.jwtService.sign(payload),
     };

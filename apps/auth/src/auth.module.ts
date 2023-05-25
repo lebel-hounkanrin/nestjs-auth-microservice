@@ -21,9 +21,15 @@ import { LocalStrategy } from './local.strategy';
         }
       }
     ]),
-    JwtModule.register({  
-          secret:"",
-          signOptions: { expiresIn: ""}
+    JwtModule.registerAsync({  
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        return {
+          secret: configService.get("JWT_ACCESS_SECRET"),
+          signOptions: { expiresIn: configService.get("JWT_ACCESS_TOKEN_EXPIRATION_TIME")}
+        }
+      },
+      inject: [ConfigService]   
     }),
     PassportModule,
   ],
