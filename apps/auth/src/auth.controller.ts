@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 
 @Controller("/auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @UseGuards(AuthGuard('local'))
   @Post('/login')
@@ -13,7 +13,7 @@ export class AuthController {
   }
 
   @Post()
-  getUser(@Body() user: {phoneNumber: string, password: string}){
+  getUser(@Body() user: { phoneNumber: string, password: string }) {
     return this.authService.validateUser(user.phoneNumber, user.password)
   }
 
@@ -33,6 +33,20 @@ export class AuthController {
   @UseGuards(AuthGuard('facebook'))
   async facebookLoginCallback(@Req() req): Promise<void> {
     // Gestion de la réponse de Facebook après la connexion réussie
+    // Vous pouvez extraire les informations d'identification de l'utilisateur à partir de req.user
+    // Effectuez des actions supplémentaires, telles que la création d'un jeton d'authentification, la redirection vers une page, etc.
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleLogin(): Promise<void> {
+    // Le middleware Passport redirigera automatiquement vers la page de connexion de Google lorsque cette route est appelée.
+  }
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleLoginCallback(@Req() req): Promise<void> {
+    // Gestion de la réponse de Google après la connexion réussie
     // Vous pouvez extraire les informations d'identification de l'utilisateur à partir de req.user
     // Effectuez des actions supplémentaires, telles que la création d'un jeton d'authentification, la redirection vers une page, etc.
   }
