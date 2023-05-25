@@ -5,6 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { FacebookStrategy } from './facebook.strategy';
 import { jwtOptions } from './jwt.options';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
@@ -27,9 +28,9 @@ import { LocalStrategy } from './local.strategy';
       inject: [ConfigService],
       useFactory: jwtOptions
     }),
-    PassportModule,
+    PassportModule.register({defaultStrategy: "jwt"}),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, ConfigService],
+  providers: [AuthService, LocalStrategy, JwtStrategy, ConfigService, FacebookStrategy],
 })
 export class AuthModule {}
