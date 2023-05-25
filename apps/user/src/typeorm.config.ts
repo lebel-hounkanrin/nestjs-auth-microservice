@@ -1,7 +1,6 @@
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { join } from "path";
-//import { User } from "./user.entity";
+import { User } from "./user.entity";
 
 export const typeOrmConfig = (configService: ConfigService): Promise<TypeOrmModuleOptions> | TypeOrmModuleOptions => {
         return {
@@ -11,10 +10,10 @@ export const typeOrmConfig = (configService: ConfigService): Promise<TypeOrmModu
                 username: configService.get<string>("POSTGRES_USER"),
                 password: configService.get<string>("POSTGRES_PASSWORD"),
                 database: configService.get<string>("POSTGRES_DB"),
-                entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+                entities: [User],
                 ssl: false,
                 synchronize: true,
-                migrationsRun: false,
+                migrationsRun: true,
                 migrations: ["dist/migrations/**/*{.ts,.js}"],
         }
 }
