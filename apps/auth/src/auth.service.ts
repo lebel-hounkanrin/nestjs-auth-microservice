@@ -45,7 +45,7 @@ export class AuthService {
     })
   }
 
-  async createFacebookUser(id:string, email: string, displayName: string): Promise<any>{
+  async getOrCrateUser(id:string, provider: string): Promise<any>{
 
   }
 }

@@ -45,7 +45,8 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleLoginCallback(@Req() req): Promise<void> {
+  async googleLoginCallback(@Req() req): Promise<string> {
+    return "hello devs"
     // Gestion de la réponse de Google après la connexion réussie
     // Vous pouvez extraire les informations d'identification de l'utilisateur à partir de req.user
     // Effectuez des actions supplémentaires, telles que la création d'un jeton d'authentification, la redirection vers une page, etc.
