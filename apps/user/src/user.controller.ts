@@ -17,4 +17,9 @@ export class UserController {
     console.log("got user", phoneNumber)
     return this.userService.getUserByPhoneNumber(phoneNumber);
   }
+
+  @MessagePattern({role: "user", cmd: "create"})
+  createUserWithGoogle(user: any){
+    return this.userService.createUserWithGoogle(user)
+  }
 }
