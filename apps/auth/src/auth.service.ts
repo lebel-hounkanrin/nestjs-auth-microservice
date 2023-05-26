@@ -45,7 +45,9 @@ export class AuthService {
     })
   }
 
-  async getOrCrateUser(id:string, provider: string): Promise<any>{
-
+  async getOrCrateUser(profile: any): Promise<any>{
+    this.client.send({ role: "user", cmd: "create" }, profile ).subscribe(
+      //res => console.log(res)
+    )
   }
 }

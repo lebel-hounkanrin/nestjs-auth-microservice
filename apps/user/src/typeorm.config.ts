@@ -1,5 +1,6 @@
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { SocialMediaUser } from "./social-media-user.entity";
 import { User } from "./user.entity";
 
 export const typeOrmConfig = (configService: ConfigService): Promise<TypeOrmModuleOptions> | TypeOrmModuleOptions => {
@@ -10,7 +11,7 @@ export const typeOrmConfig = (configService: ConfigService): Promise<TypeOrmModu
                 username: configService.get<string>("POSTGRES_USER"),
                 password: configService.get<string>("POSTGRES_PASSWORD"),
                 database: configService.get<string>("POSTGRES_DB"),
-                entities: [User],
+                entities: [User, SocialMediaUser],
                 ssl: false,
                 synchronize: true,
                 migrationsRun: true,

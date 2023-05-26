@@ -16,18 +16,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google"){
     }
 
     async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
-        console.log(profile)
+        console.log(accessToken)
         const { id, name, emails } = profile;
-        const user = this.authService.getOrCrateUser(id, "google");
+        const user = this.authService.getOrCrateUser(profile);
         return {
             provider: 'google',
             providerId: id,
             name: name.givenName,
             username: emails[0].value,
         };
-        // Logique de validation de l'utilisateur
-        // Utilisez les informations du profil pour vérifier l'utilisateur dans votre système
-        // Appelez done(null, user) si la validation réussit
-        // Sinon, appelez done(err) avec une erreur appropriée
       }
 }

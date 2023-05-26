@@ -2,11 +2,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { SocialMediaUser } from './social-media-user.entity';
 import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
-	constructor(@InjectRepository(User) private userRepository: Repository<User>) { }
+	constructor(
+		@InjectRepository(User) private userRepository: Repository<User>,
+		@InjectRepository(SocialMediaUser) private socialMediaUserRepo: Repository<SocialMediaUser>
+		) { }
 
 	public async create(entity: RegisterUserDto): Promise<User> {
 		const user = await this.getUserByPhoneNumber(entity.phoneNumber);
@@ -24,13 +28,17 @@ export class UserService {
 		}
 	}
 
-	async createUserWithGoogle(userParams:any){
-		const existingUser = await this.getUserByGoogleId(userParams.id);
+	async createUserWithSocialMedia(userParams:any){
+		const { id, displayName, emails, provider } = userParams;
+		const existingUser = await this.getSocialMediaUserById(id, provider);
 		if(existingUser) return existingUser
-		const user = this.userRepository.create();
-		user.googleId = userParams.id;
-		user.userName = userParams.displayName;
-		return this.userRepository.save(user);
+		const user = this.socialMediaUserRepo.create();
+		user.socialMediaId=id;
+		user.email = emails[0].value;
+		user.userName = displayName;
+		user.provider = provider;
+		//user.refreshToken = refreshToken;
+		return this.socialMediaUserRepo.save(user);
 	}
 
 	async getUserByPhoneNumber(phoneNumber: string): Promise<User> {
@@ -40,11 +48,8 @@ export class UserService {
 			.getOne();
 		return user;
 	}
-	async getUserByFacebookId(userId: string): Promise<User> {
-		return this.userRepository.findOneBy({ facebookId: userId })
+	async getSocialMediaUserById(userId: string, provider: string): Promise<SocialMediaUser> {
+		return this.socialMediaUserRepo.findOneBy([{provider: provider, socialMediaId: userId}])
 	}
 
-	async getUserByGoogleId(userId: string): Promise<User> {
-		return this.userRepository.findOneBy({ googleId: userId })
-	}
 }

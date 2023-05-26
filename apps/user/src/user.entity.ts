@@ -26,12 +26,6 @@ export class User {
         this.password = await hash(this.password, 10);
     }
 
-    @Column("varchar", {nullable: true})
-    facebookId?: string;
-
-    @Column("varchar", {nullable: true})
-    googleId?: string;
-
     @Column({
         type: "boolean",
         default: false

@@ -24,18 +24,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
             name: name.givenName,
             username: emails[0].value,
         };
-        // try {
-        //     const { id, emails, displayName } = profile;
-        //     const email = emails?.[0]?.value;
-        //     const user = await this.authService.findUserByFacebookIdOrEmail(id, email);
-        //     if(user){
-        //         done(null, user)
-        //     } else{
-        //         const newUser = await this.authService.createFacebookUser(id, email, displayName);
-        //         done(null, newUser)
-        //     }
-
-        // } catch (err) {
-        // }
+       
     }
 }
