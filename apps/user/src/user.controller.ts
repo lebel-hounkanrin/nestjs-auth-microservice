@@ -14,7 +14,11 @@ export class UserController {
 
   @MessagePattern({role: "user", cmd: "get"})
   getUser(phoneNumber: string){
-    console.log("got user", phoneNumber)
     return this.userService.getUserByPhoneNumber(phoneNumber);
+  }
+
+  @MessagePattern({role: "user", cmd: "create"})
+  createUserWithGoogle(user: any){
+    return this.userService.createUserWithSocialMedia(user)
   }
 }

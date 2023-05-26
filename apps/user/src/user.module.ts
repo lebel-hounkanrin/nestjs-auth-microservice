@@ -6,6 +6,7 @@ import { User } from "./user.entity"
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database.module';
 import { joiSchema } from './joi.schema';
+import { SocialMediaUser } from './social-media-user.entity';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { joiSchema } from './joi.schema';
       validationSchema: joiSchema()
     }),
     DatabaseModule,
-    TypeOrmModule.forFeature([User])
+    TypeOrmModule.forFeature([User, SocialMediaUser])
   ],
   controllers: [UserController],
   providers: [UserService],
