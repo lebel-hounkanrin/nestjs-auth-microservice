@@ -5,6 +5,9 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { FacebookStrategy } from './facebook.strategy';
+import { GoogleStrategy } from './google.strategy';
+import { jwtOptions } from './jwt.options';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 
@@ -23,17 +26,12 @@ import { LocalStrategy } from './local.strategy';
     ]),
     JwtModule.registerAsync({  
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => {
-        return {
-          secret: configService.get("JWT_ACCESS_SECRET"),
-          signOptions: { expiresIn: configService.get("JWT_ACCESS_TOKEN_EXPIRATION_TIME")}
-        }
-      },
-      inject: [ConfigService]   
+      inject: [ConfigService],
+      useFactory: jwtOptions
     }),
-    PassportModule,
+    PassportModule.register({defaultStrategy: "jwt"}),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, ConfigService],
+  providers: [AuthService, LocalStrategy, JwtStrategy, ConfigService, FacebookStrategy, GoogleStrategy],
 })
 export class AuthModule {}
