@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { SocialMediaUser } from './social-media-user.entity';
@@ -52,4 +53,13 @@ export class UserService {
 		return this.socialMediaUserRepo.findOneBy([{provider: provider, socialMediaId: userId}])
 	}
 
+	async setUserRefreshToken(userId: string, token: string){
+		this.userRepository.update({id: userId}, {refreshToken: token});
+	}
+
+	async getUserWithRefreshToken(token: string){
+		const hashedToken = await hash(token, 10)
+		console.log(hashedToken);
+		return this.userRepository.findOneBy({refreshToken: hashedToken})
+	}
 }

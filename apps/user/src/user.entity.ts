@@ -24,6 +24,9 @@ export class User {
     @BeforeInsert()
     private async hashPassword() {
         this.password = await hash(this.password, 10);
+        if(this.refreshToken){
+            this.refreshToken = await hash(this.refreshToken, 10)
+        }
     }
 
     @Column({
@@ -31,6 +34,9 @@ export class User {
         default: false
     })
     isPhoneNumberConfirmed?: boolean;
+
+    @Column("varchar", {nullable: true})
+    refreshToken?: string
 
     @CreateDateColumn()
     createdAt: Date;

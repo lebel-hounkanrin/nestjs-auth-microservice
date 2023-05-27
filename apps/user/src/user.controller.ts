@@ -21,4 +21,13 @@ export class UserController {
   createUserWithGoogle(user: any){
     return this.userService.createUserWithSocialMedia(user)
   }
+
+  @MessagePattern({role: "token", cmd: "create"})
+  createRefresToken(payload: {userId: string, token: string}){
+    return this.userService.setUserRefreshToken(payload.userId, payload.token)
+  }
+  @MessagePattern({role: "token", cmd: "get"})
+  getUserWithToken(token: string){
+    return this.userService.getUserWithRefreshToken(token)
+  }
 }
