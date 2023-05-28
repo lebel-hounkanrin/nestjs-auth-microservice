@@ -16,22 +16,29 @@ import { LocalStrategy } from './local.strategy';
     ConfigModule.forRoot(),
     ClientsModule.register([
       {
-        name: "USER_CLIENT",
+        name: 'USER_CLIENT',
         transport: Transport.TCP,
         options: {
-          host: "localhost",
-          port: 4010
-        }
-      }
+          host: 'localhost',
+          port: 4010,
+        },
+      },
     ]),
-    JwtModule.registerAsync({  
+    JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: jwtOptions
+      useFactory: jwtOptions,
     }),
-    PassportModule.register({defaultStrategy: "jwt"}),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, ConfigService, FacebookStrategy, GoogleStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    ConfigService,
+    FacebookStrategy,
+    GoogleStrategy,
+  ],
 })
 export class AuthModule {}

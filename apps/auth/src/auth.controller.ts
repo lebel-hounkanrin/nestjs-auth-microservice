@@ -3,9 +3,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
 
-@Controller("/auth")
+@Controller('/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @UseGuards(AuthGuard('local'))
   @Post('/login')
@@ -13,25 +13,23 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard('jwt'))
   @Get('profile')
   getProfile(@Req() req) {
-    console.log(req.user)
+    console.log(req.user);
     return req.user;
   }
 
-  @Get("/refresh-token")
-  refreshToken(@Req() req: Request){
-    const token = req.headers.authorization.split(" ")[1];
-    console.log(token)
-    return this.authService.refreshTokens(token)
+  @Get('/refresh-token')
+  refreshToken(@Req() req: Request) {
+    const token = req.headers.authorization.split(' ')[1];
+    console.log(token);
+    return this.authService.refreshTokens(token);
   }
 
   @Get('facebook')
   @UseGuards(AuthGuard('facebook'))
-  async facebookLogin(): Promise<void> {
-
-  }
+  async facebookLogin(): Promise<void> {}
 
   @Get('facebook/callback')
   @UseGuards(AuthGuard('facebook'))
@@ -50,6 +48,6 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleLoginCallback(@Req() req): Promise<string> {
-    return req.user
+    return req.user;
   }
 }
