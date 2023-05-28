@@ -4,16 +4,16 @@ import { Transport } from '@nestjs/microservices';
 import { AuthModule } from './auth.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AuthModule); 
-  app.connectMicroservice( {
+  const app = await NestFactory.create(AuthModule);
+  app.connectMicroservice({
     transport: Transport.TCP,
     options: {
-      host: "localhost",
-      port: 4000
-    }
+      host: 'localhost',
+      port: 4000,
+    },
   });
   await app.startAllMicroservices();
   await app.listen(3000);
-  Logger.log("Auth microservice started on port 3000");
+  Logger.log('Auth microservice started on port 3000');
 }
 bootstrap();
