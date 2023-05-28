@@ -54,12 +54,13 @@ export class UserService {
 	}
 
 	async setUserRefreshToken(userId: string, token: string){
+		console.log("Got refreshtoken", token)
 		this.userRepository.update({id: userId}, {refreshToken: token});
 	}
 
 	async getUserWithRefreshToken(token: string){
-		const hashedToken = await hash(token, 10)
-		console.log(hashedToken);
-		return this.userRepository.findOneBy({refreshToken: hashedToken})
+		//const hashedToken = await hash(token, "secret")
+		//console.log(hashedToken);
+		return this.userRepository.findOneBy({refreshToken: token})
 	}
 }

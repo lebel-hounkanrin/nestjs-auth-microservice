@@ -24,9 +24,9 @@ export class User {
     @BeforeInsert()
     private async hashPassword() {
         this.password = await hash(this.password, 10);
-        if(this.refreshToken){
-            this.refreshToken = await hash(this.refreshToken, 10)
-        }
+        // if(this.refreshToken){
+        //     this.refreshToken = await hash(this.refreshToken, "secret")
+        // }
     }
 
     @Column({

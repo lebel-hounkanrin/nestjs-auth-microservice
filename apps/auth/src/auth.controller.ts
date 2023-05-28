@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 import { AuthService } from './auth.service';
 
 @Controller("/auth")
@@ -16,6 +17,13 @@ export class AuthController {
   @Get('profile')
   getProfile(@Req() req) {
     return req.user;
+  }
+
+  @Get("/refresh-token")
+  refreshToken(@Req() req: Request){
+    const token = req.headers.authorization.split(" ")[1];
+    console.log(token)
+    return this.authService.refreshTokens(token)
   }
 
   @Get('facebook')

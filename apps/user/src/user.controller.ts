@@ -26,7 +26,7 @@ export class UserController {
   createRefresToken(payload: {userId: string, token: string}){
     return this.userService.setUserRefreshToken(payload.userId, payload.token)
   }
-  @MessagePattern({role: "token", cmd: "get"})
+  @MessagePattern({role: "userWithtoken", cmd: "get"})
   getUserWithToken(token: string){
     return this.userService.getUserWithRefreshToken(token)
   }

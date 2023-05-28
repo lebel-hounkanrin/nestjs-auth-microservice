@@ -33,11 +33,14 @@ export class AuthService {
   
   async login(user: any) {
     const payload = { username: user.phoneNumber, sub: user.id };
+    const refres_token= this.getJwtRefreshToken(user.id)
+    this.client.send({role: "token", cmd: "create"}, {userId: user.id, token: refres_token}).subscribe(res => {})
     return {
       userId: user.id,
       access_token: this.getJwtAccessToken(user.id),
-      refres_token: this.getJwtRefreshToken(user.id),
+      refres_token
     };
+    
   }
 
   getJwtAccessToken(userId: string){
@@ -60,12 +63,34 @@ export class AuthService {
   }
 
   refreshTokens(token: string){
-    const user = {id: ""};
-    if(!user){
+    try{
+      this.jwtService.verify(token, {secret: this.configService.get("JWT_ACCESS_SECRET")});
+    }
+    catch(e){
       throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
     }
-    const accessToken = this.getJwtAccessToken(user.id);
-    return {userId: user.id, accessToken, refreshToken: token}
+    try{
+      return new Promise((resolve, reject) => {
+        this.client.send({role: "userWithtoken", cmd: "get"}, token).subscribe(
+          user => {
+            if(!user){
+              console.log("This is called")
+              //reject("Invalid refresh token")
+              throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+            }
+            const accessToken = this.getJwtAccessToken(user.id);
+            resolve({userId: user.id, accessToken, refreshToken: token})
+          });
+      })
+    }catch(e){
+      Logger.error("something is wrong ", e)
+    }
+
+
+  }
+
+  deleUserRefreshToken(token: string){
+    this.client.send({role: "token", cmd: "create"}, "").subscribe()
   }
   
   async findUserByFacebookIdOrEmail(id: string, email: string): Promise<any>{
